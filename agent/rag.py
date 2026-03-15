@@ -1,5 +1,9 @@
-from langchain.prompts import PromptTemplate
-from langchain.schema.output_parser import StrOutputParser
+try:
+    from langchain_core.prompts import PromptTemplate
+    from langchain_core.output_parsers import StrOutputParser
+except ImportError:
+    from langchain.prompts import PromptTemplate
+    from langchain.schema.output_parser import StrOutputParser
 try:
     from agent.llm_factory import get_llm
 except ImportError:
