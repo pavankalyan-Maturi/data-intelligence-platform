@@ -1,0 +1,47 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.env.docker
+.env.local
+
+# Database files
+mlflow.db
+*.db
+*.sqlite
+
+# MLflow
+mlflow_data/
+mlruns/
+
+# Qdrant
+qdrant_storage/
+
+# Data files
+*.csv
+*.xlsx
+*.xls
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+
+# Jupyter
+.ipynb_checkpoints/

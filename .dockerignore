@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.git/
+.github/
+*.md
+mlflow.db
+mlflow_data/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+node_modules/
