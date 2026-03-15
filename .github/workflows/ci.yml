@@ -56,24 +56,35 @@ jobs:
           echo "EMBEDDING_MODEL=all-MiniLM-L6-v2" >> $GITHUB_ENV
           echo "MLFLOW_TRACKING_URI=sqlite:///mlflow.db" >> $GITHUB_ENV
 
+      # 🆕 Test imports before starting server
+      - name: Test Python imports
+        run: |
+          python -c "from backend.main import app; print('✅ Imports OK')"
+
       - name: Start FastAPI server
         run: |
-          uvicorn backend.main:app --host 0.0.0.0 --port 8000 &
-          echo "Waiting for FastAPI to start..."
-          # 🆕 Wait up to 60 seconds for server to be ready
-          for i in {1..12}; do
-            if curl -s http://localhost:8000/ > /dev/null; then
-              echo "✅ FastAPI is ready!"
+          uvicorn backend.main:app --host 0.0.0.0 --port 8000 --log-level debug > fastapi.log 2>&1 &
+          echo "FastAPI PID: $!"
+          echo "Waiting for FastAPI..."
+          for i in {1..20}; do
+            if curl -s http://localhost:8000/ > /dev/null 2>&1; then
+              echo "✅ FastAPI ready after ${i} attempts!"
               break
             fi
-            echo "Attempt $i/12 - waiting 5 seconds..."
+            echo "Attempt $i/20 - waiting 5s..."
             sleep 5
           done
 
+      # 🆕 Show FastAPI logs if it failed
+      - name: Show FastAPI logs
+        if: always()
+        run: |
+          echo "=== FastAPI Logs ==="
+          cat fastapi.log || echo "No log file found"
+
       - name: Verify FastAPI is running
         run: |
-          curl -f http://localhost:8000/ || exit 1
-          echo "✅ FastAPI confirmed running!"
+          curl -f http://localhost:8000/ || (cat fastapi.log && exit 1)
 
       - name: Run API tests
         run: |
