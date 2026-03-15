@@ -11,7 +11,21 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME", "data_intel")
 VECTOR_SIZE = 384  # all-MiniLM-L6-v2 outputs 384-dimensional vectors
 
 def get_qdrant_client():
-    return QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
+    api_key = os.getenv("QDRANT_API_KEY")
+    host = os.getenv("QDRANT_HOST", "localhost")
+    port = int(os.getenv("QDRANT_PORT", 6333))
+
+    if api_key:
+        # Production: Qdrant Cloud
+        return QdrantClient(
+            host=host,
+            port=port,
+            api_key=api_key,
+            https=True
+        )
+    else:
+        # Development: local Qdrant
+        return QdrantClient(host=host, port=port)
 
 def init_qdrant_collection():
     client = get_qdrant_client()
