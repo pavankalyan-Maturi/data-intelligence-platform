@@ -15,7 +15,7 @@ jobs:
         image: postgres:15
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: postgres 
           POSTGRES_DB: dataintel
         ports:
           - 5432:5432
