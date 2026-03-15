@@ -3,32 +3,33 @@ import os
 def get_llm(streaming: bool = False):
     """
     Returns appropriate LLM based on environment:
-    - Local development: DirectOllama (phi3:mini)
-    - Production: Groq (llama3)
+    - Production (GROQ_API_KEY set): Groq cloud LLM
+    - Development (no key): Local Ollama
     """
     groq_api_key = os.getenv("GROQ_API_KEY")
 
     if groq_api_key:
-        # Production: use Groq (fast, free, cloud)
         return _get_groq_llm(groq_api_key)
     else:
-        # Development: use local Ollama
         return _get_ollama_llm()
 
 
 def _get_groq_llm(api_key: str):
-    """Groq LLM — for production deployment"""
+    """Groq LLM — fast, free, production ready"""
     try:
         from langchain_groq import ChatGroq
+        from langchain.schema.output_parser import StrOutputParser
         print("✅ Using Groq LLM (production)")
-        return ChatGroq(
+
+        llm = ChatGroq(
             groq_api_key=api_key,
-            model_name="llama3-8b-8192",  # Llama 3 8B on Groq
+            model_name="llama3-8b-8192",
             temperature=0.0,
             max_tokens=300,
         )
-    except ImportError:
-        print("⚠️ langchain-groq not installed, falling back to Ollama")
+        return llm
+    except ImportError as e:
+        print(f"⚠️ Groq not available: {e}, falling back to Ollama")
         return _get_ollama_llm()
 
 

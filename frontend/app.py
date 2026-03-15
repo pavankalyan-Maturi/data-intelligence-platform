@@ -6,9 +6,9 @@ import plotly.graph_objects as go
 from datetime import datetime
 import os
 
-# 🆕 Read API base from environment variable
+# Reads API_URL from environment in production
 # Falls back to localhost for development
-API_BASE = os.getenv("API_BASE", "http://localhost:8000/api")
+API_BASE = os.getenv("API_URL", os.getenv("API_BASE", "http://localhost:8000/api"))
 
 # ── PAGE CONFIG ──────────────────────────────────────────────
 st.set_page_config(

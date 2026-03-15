@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate
 from langchain.schema.output_parser import StrOutputParser
-from agent.llm import get_llm
+from agent.llm_factory import get_llm
 from db.qdrant import search_similar
 from sentence_transformers import SentenceTransformer
 from mlops.tracking import log_query_run
