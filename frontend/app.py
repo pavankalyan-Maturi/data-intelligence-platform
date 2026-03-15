@@ -24,8 +24,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── CONSTANTS ─────────────────────────────────────────────────
-API_BASE = "http://localhost:8000/api"
 
 # ── CUSTOM CSS ────────────────────────────────────────────────
 st.markdown("""
